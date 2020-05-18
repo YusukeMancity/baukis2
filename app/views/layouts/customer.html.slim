@@ -5,12 +5,11 @@ html
       = document_title
     = csrf_meta_tags
     = csp_meta_tag
-    = stylesheet_link_tag "staff", media: "all", "data-turbolinks-track": "reload"
+    = stylesheet_link_tag "customer", media: "all", "data-turbolinks-track": "reload"
     = javascript_pack_tag "application", "data-turbolinks-track": "reload"
   body
     #wrapper
-      == render "staff/shared/header"
+      == render "customer/shared/header"
       #container
         = yield
       == render "shared/footer"
-
