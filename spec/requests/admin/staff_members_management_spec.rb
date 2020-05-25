@@ -16,7 +16,7 @@ describe "管理者による職員管理" do
         }
       }
   end
-
+  
   describe "一覧" do
     let(:administrator) { create(:administrator) }
 

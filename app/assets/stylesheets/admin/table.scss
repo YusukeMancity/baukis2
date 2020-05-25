@@ -24,6 +24,9 @@
       td.actions {
         text-align: center;
         color: $dark_gray;
+        a {
+          text-decoration: none;
+        }
       }
     }
   }

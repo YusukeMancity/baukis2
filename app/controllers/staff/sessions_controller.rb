@@ -13,8 +13,7 @@ class Staff::SessionsController < Staff::Base
   def create
     @form = Staff::LoginForm.new(login_form_params)
     if @form.email.present?
-      staff_member =
-        StaffMember.find_by("LOWER(email) = ?", @form.email.downcase)
+      staff_member = StaffMember.find_by("LOWER(email) = ?", @form.email.downcase)
     end
     if Staff::Authenticator.new(staff_member).authenticate(@form.password)
       if staff_member.suspended?
@@ -24,7 +23,7 @@ class Staff::SessionsController < Staff::Base
       else
         session[:staff_member_id] = staff_member.id # ←がログイン
         session[:last_access_time] = Time.current
-        staff_member.events.create!(type: "logged_in")
+        staff_member.events.create!(type: "logged_in") #StaffEvent.create!(member: staff_member, type: "rejected")と書くことも可能
         flash.notice = "ログインしました。"
         redirect_to :staff_root
       end
@@ -39,6 +38,9 @@ class Staff::SessionsController < Staff::Base
   end
 
   def destroy
+    if current_staff_member  #if文を使うのはすでにログアウトした状態でこの処理が行われることを防ぐため
+      current_staff_member.events.create!(type: "logged_out")
+    end
     session.delete(:staff_member_id)
     flash.notice = "ログアウトしました。"
     redirect_to :staff_root
